@@ -12,7 +12,7 @@ export default function NoteList({ notes,onMutation }: NoteListProps) {
     
     const mutation = useMutation({
         mutationFn: async (id:number) => {
-            deleteNote(id);
+            await deleteNote(id);
         },
         onSuccess: async () => {
             onMutation(true);

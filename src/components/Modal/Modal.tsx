@@ -5,10 +5,11 @@ import NoteForm from "../NoteForm/NoteForm";
 //import { Formik, Form,Field  } from "formik";
 
 interface ModalProps {
-    onClose: ()=>void,
+    onClose: () => void,
+    onMutation: (value:boolean) => void,
 }
 
-export default function Modal({ onClose }:ModalProps) {
+export default function Modal({ onClose, onMutation }:ModalProps) {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
@@ -40,7 +41,7 @@ export default function Modal({ onClose }:ModalProps) {
         >
             <div className={css.modal}>
                 {
-                    <NoteForm onClose={onClose} />
+                    <NoteForm onClose={onClose} onMutation={onMutation} />
                 }
             </div>
         </div>,

@@ -14,7 +14,8 @@ const initialValues: Note = {
 };
 
 interface NoteFormProps {
-    onClose: ()=>void,
+    onClose: () => void,
+    onMutation: (value:boolean) => void,
 }
 
 const validationSchema = Yup.object().shape({
@@ -30,13 +31,14 @@ const validationSchema = Yup.object().shape({
     
 });
 
-export default function NoteForm({ onClose}:NoteFormProps) {
+export default function NoteForm({ onClose,onMutation}:NoteFormProps) {
     const formId = useId();
     const mutation = useMutation({
         mutationFn: async (values: Note) => {
             createNote(values);
         },
         onSuccess: () => {
+            onMutation(true);
             onClose();
         }
     });

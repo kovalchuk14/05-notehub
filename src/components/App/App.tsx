@@ -62,7 +62,7 @@ function App() {
         {<button className={css.button} onClick={()=>setIsModalOpen(true)}>Create note +</button>}
       </header>
       {(data && data?.notes.length > 0) ? (<NoteList notes={data.notes} onMutation={ setIsMutationNeede} />) : (<p>No notes, try again later</p>)}
-      {isModalOpen && <Modal onClose={modalClose} />}
+      {isModalOpen && <Modal onClose={modalClose} onMutation={setIsMutationNeede}/>}
     </div>
   );
 }
