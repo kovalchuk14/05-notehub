@@ -2,7 +2,7 @@
 import "modern-normalize";
 import css from "./App.module.css";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchNotes } from "../../services/NoteService";
+import { fetchNotes } from "../../services/noteService";
 import { useState } from "react";
 import NoteList from "../NoteList/NoteList";
 import ReactPaginate from "react-paginate";
