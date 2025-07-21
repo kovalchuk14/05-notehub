@@ -2,12 +2,12 @@
 import "modern-normalize";
 import css from "./App.module.css";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchNotes } from "../../services/noteService";
 import { useState } from "react";
 import NoteList from "../NoteList/NoteList";
 import ReactPaginate from "react-paginate";
 import Modal from "../Modal/Modal";
 import { useDebouncedCallback } from "use-debounce";
+import { fetchNotes } from "../../services/noteService";
 
 function App() {
   const queryClient = useQueryClient();
