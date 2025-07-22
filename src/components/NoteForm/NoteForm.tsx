@@ -4,7 +4,7 @@ import { Form, Formik, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
 import type {  NoteInputValues } from "../../types/note";
 import { createNote } from "../../services/noteService";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const initialValues: NoteInputValues = {
     title: "",
@@ -14,7 +14,6 @@ const initialValues: NoteInputValues = {
 
 interface NoteFormProps {
     onClose: () => void,
-    onMutation: (value:boolean) => void,
 }
 
 const validationSchema = Yup.object().shape({
@@ -30,14 +29,15 @@ const validationSchema = Yup.object().shape({
     
 });
 
-export default function NoteForm({ onClose,onMutation}:NoteFormProps) {
+export default function NoteForm({ onClose}:NoteFormProps) {
     const formId = useId();
+    const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async (values: NoteInputValues) => {
             await createNote(values);
         },
         onSuccess: () => {
-            onMutation(true);//value from App.tsx that bagins invalidation 
+            queryClient.invalidateQueries({ queryKey: ["request"] });
             onClose();
         }
     });

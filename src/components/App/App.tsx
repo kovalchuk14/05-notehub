@@ -1,7 +1,7 @@
 //import { useState } from 'react'
 import "modern-normalize";
 import css from "./App.module.css";
-import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import NoteList from "../NoteList/NoteList";
 import Modal from "../Modal/Modal";
@@ -12,12 +12,10 @@ import Pagination from "../Pagination/Pagination";
 import SearchBox from "../SearchBox/SearchBox";
 
 function App() {
-  const queryClient = useQueryClient();
 
   const [title, setTitle] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMutationNeeded, setIsMutationNeede] = useState(false);
   const handleChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setTitle(event.target.value);
@@ -32,11 +30,6 @@ function App() {
     placeholderData: keepPreviousData,
   });
 
-  if (isMutationNeeded) {
-    console.log(1);
-    queryClient.invalidateQueries({ queryKey: ["request",title, currentPage] });
-    setIsMutationNeede(false);
-  }
 
   function modalClose() {
     setIsModalOpen(false);
@@ -51,9 +44,9 @@ function App() {
           <Pagination data={ data} setCurrentPage={setCurrentPage} currentPage={currentPage} />}
         {<button className={css.button} onClick={()=>setIsModalOpen(true)}>Create note +</button>}
       </header>
-      {(data && data?.notes.length > 0) ? (<NoteList notes={data.notes} onMutation={ setIsMutationNeede} />) : (<p>No notes, try again later</p>)}
+      {(data && data?.notes.length > 0) ? (<NoteList notes={data.notes}/>) : (<p>No notes, try again later</p>)}
       {isModalOpen && <Modal onClose={modalClose} children={
-        <NoteForm onClose={modalClose} onMutation={setIsMutationNeede} />
+        <NoteForm onClose={modalClose}/>
       }/>}
     </div>
   );
