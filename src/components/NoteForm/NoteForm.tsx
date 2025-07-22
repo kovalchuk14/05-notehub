@@ -2,12 +2,11 @@ import { useId } from "react";
 import css from "./NoteForm.module.css";
 import { Form, Formik, Field, ErrorMessage, type FormikHelpers } from "formik";
 import * as Yup from "yup";
-import type { Note } from "../../types/note";
+import type {  NoteInputValues } from "../../types/note";
 import { createNote } from "../../services/noteService";
 import { useMutation } from '@tanstack/react-query';
 
-const initialValues: Note = {
-    id: 0,
+const initialValues: NoteInputValues = {
     title: "",
     content: "",
     tag: "Todo",
@@ -26,7 +25,7 @@ const validationSchema = Yup.object().shape({
     content: Yup.string()
         .max(500, "content is too long"),
     tag: Yup.string()
-        .oneOf(["Todo", "Work", "Shopping", "Meeting", "Persona;"], "you invalid")
+        .oneOf(["Todo", "Work", "Shopping", "Meeting", "Personal"], "you invalid")
         .required("tag is required")
     
 });
@@ -34,18 +33,18 @@ const validationSchema = Yup.object().shape({
 export default function NoteForm({ onClose,onMutation}:NoteFormProps) {
     const formId = useId();
     const mutation = useMutation({
-        mutationFn: async (values: Note) => {
-            createNote(values);
+        mutationFn: async (values: NoteInputValues) => {
+            await createNote(values);
         },
         onSuccess: () => {
-            onMutation(true);
+            onMutation(true);//value from App.tsx that bagins invalidation 
             onClose();
         }
     });
 
     const handleSubmit = (
-        values: Note,
-        actions: FormikHelpers<Note>
+        values: NoteInputValues,
+        actions: FormikHelpers<NoteInputValues>
     ) => {
         mutation.mutate(values);
         console.log('Form submitted:', values);

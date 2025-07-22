@@ -1,10 +1,7 @@
 import axios from "axios";
-import type { Note } from "../types/note";
+import type { FetchHttpResponse, Note, NoteInputValues } from "../types/note";
 
-interface FetchHttpResponse {
-    notes: Note[],
-    totalPages:number,
-}
+
 
 interface FetchParams {
     search?: string,
@@ -31,7 +28,7 @@ export async function fetchNotes(title: string, page: number):Promise<FetchHttpR
     return response.data;
 }
 
-export async function createNote(note: Note): Promise<Note> {
+export async function createNote(note: NoteInputValues): Promise<Note> {
     const response = await axios.post<Note>("https://notehub-public.goit.study/api/notes", 
         {
             title: note.title,

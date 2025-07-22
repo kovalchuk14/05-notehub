@@ -1,15 +1,16 @@
 import { createPortal } from "react-dom"
 import css from "./Modal.module.css"
 import { useEffect } from "react";
-import NoteForm from "../NoteForm/NoteForm";
+//import NoteForm from "../NoteForm/NoteForm";
 //import { Formik, Form,Field  } from "formik";
 
 interface ModalProps {
     onClose: () => void,
-    onMutation: (value:boolean) => void,
+    //onMutation: (value: boolean) => void,
+    children: React.ReactNode,
 }
 
-export default function Modal({ onClose, onMutation }:ModalProps) {
+export default function Modal({ onClose, children }:ModalProps) {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === "Escape") {
@@ -40,9 +41,7 @@ export default function Modal({ onClose, onMutation }:ModalProps) {
             onClick={handleBackdropClick}
         >
             <div className={css.modal}>
-                {
-                    <NoteForm onClose={onClose} onMutation={onMutation} />
-                }
+                    {children}
             </div>
         </div>,
         document.body
