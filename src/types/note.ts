@@ -3,19 +3,15 @@ export interface Note {
     title: string,
     content: string,
     tag: string,
-    createdAt?: string,
-    updatedAt?: string,
+    createdAt: string,
+    updatedAt: string,
 }
 
 
 export interface NoteInputValues {
     title: string,
-    content: string,
+    content?: string,
     tag: string,
 }
 
 
-export interface FetchHttpResponse {
-    notes: Note[],
-    totalPages:number,
-}

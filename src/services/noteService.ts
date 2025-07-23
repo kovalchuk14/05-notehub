@@ -1,20 +1,23 @@
 import axios from "axios";
-import type { FetchHttpResponse, Note, NoteInputValues } from "../types/note";
+import type { Note, NoteInputValues } from "../types/note";
 
-
+interface FetchHttpResponse {
+    notes: Note[],
+    totalPages:number,
+}
 
 interface FetchParams {
     search?: string,
     page: number,
 }
 
-export async function fetchNotes(title: string, page: number):Promise<FetchHttpResponse> {
+export async function fetchNotes(searchText: string, page: number):Promise<FetchHttpResponse> {
     const params:FetchParams = {
     page,
   };
 
-  if (title.trim() !== "") {
-    params.search = title.trim();
+  if (searchText.trim() !== "") {
+    params.search = searchText.trim();
   }
     const response = await axios.get<FetchHttpResponse>("https://notehub-public.goit.study/api/notes", {
         params: {

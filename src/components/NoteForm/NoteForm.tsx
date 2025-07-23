@@ -14,6 +14,7 @@ const initialValues: NoteInputValues = {
 
 interface NoteFormProps {
     onClose: () => void,
+    queryKey: (string | number)[],
 }
 
 const validationSchema = Yup.object().shape({
@@ -29,26 +30,26 @@ const validationSchema = Yup.object().shape({
     
 });
 
-export default function NoteForm({ onClose}:NoteFormProps) {
+export default function NoteForm({ onClose, queryKey}:NoteFormProps) {
     const formId = useId();
     const queryClient = useQueryClient();
     const mutation = useMutation({
         mutationFn: async (values: NoteInputValues) => {
             await createNote(values);
         },
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["request"] });
-            onClose();
-        }
     });
 
     const handleSubmit = (
         values: NoteInputValues,
         actions: FormikHelpers<NoteInputValues>
     ) => {
-        mutation.mutate(values);
-        console.log('Form submitted:', values);
-        actions.resetForm();
+        mutation.mutate(values, {
+            onSuccess: () => {
+                actions.resetForm();
+                queryClient.invalidateQueries({ queryKey});
+                onClose();
+            },
+        });
     };
 
 

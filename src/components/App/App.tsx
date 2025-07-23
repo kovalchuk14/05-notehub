@@ -13,20 +13,20 @@ import SearchBox from "../SearchBox/SearchBox";
 
 function App() {
 
-  const [title, setTitle] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const handleChange = useDebouncedCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setTitle(event.target.value);
+    (value: string) => {
+      setSearchQuery(value);
       setCurrentPage(1);
     },
     1000
   );
 
   const { data } = useQuery({
-    queryKey: ["request",title, currentPage],
-    queryFn: () => fetchNotes(title, currentPage),
+    queryKey: ["request",searchQuery, currentPage],
+    queryFn: () => fetchNotes(searchQuery, currentPage),
     placeholderData: keepPreviousData,
   });
 
@@ -39,15 +39,16 @@ function App() {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        {<SearchBox handleChange={handleChange}/>}
+        {<SearchBox handleChange={handleChange} value={searchQuery} />}
         {data && data?.totalPages > 1 &&
-          <Pagination data={ data} setCurrentPage={setCurrentPage} currentPage={currentPage} />}
+          <Pagination totalPages={ data.totalPages} setCurrentPage={setCurrentPage} currentPage={currentPage} />}
         {<button className={css.button} onClick={()=>setIsModalOpen(true)}>Create note +</button>}
       </header>
       {(data && data?.notes.length > 0) ? (<NoteList notes={data.notes}/>) : (<p>No notes, try again later</p>)}
-      {isModalOpen && <Modal onClose={modalClose} children={
-        <NoteForm onClose={modalClose}/>
-      }/>}
+      {isModalOpen && <Modal onClose={modalClose}>
+        <NoteForm onClose={modalClose} queryKey={["request",searchQuery, currentPage]}/>
+      </Modal>
+      }
     </div>
   );
 }

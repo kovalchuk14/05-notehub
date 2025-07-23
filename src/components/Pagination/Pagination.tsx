@@ -1,17 +1,16 @@
 import ReactPaginate from "react-paginate";
 import css from "./Pagination.module.css";
-import type { FetchHttpResponse } from "../../types/note";
 
 interface PaginationProps {
-    data: FetchHttpResponse,
+    totalPages: number,
     setCurrentPage: (page: number) => void,
     currentPage: number,
 }
 
-export default function Pagination({ data, setCurrentPage, currentPage}:PaginationProps) {
+export default function Pagination({ totalPages, setCurrentPage, currentPage}:PaginationProps) {
     return (
         <ReactPaginate
-            pageCount={data.totalPages}
+            pageCount={totalPages}
             pageRangeDisplayed={5}
             marginPagesDisplayed={1}
             onPageChange={({ selected }) => setCurrentPage(selected + 1)}
