@@ -47,7 +47,7 @@ export async function createNote(note: NoteInputValues): Promise<Note> {
     return response.data;
 }
 
-export async function deleteNote(id: number): Promise<Note> {
+export async function deleteNote(id: string): Promise<Note> {
     const response = await axios.delete<Note>(`https://notehub-public.goit.study/api/notes/${id}`, {
         headers: {
              Authorization: `Bearer ${import.meta.env.VITE_NOTEHUB_TOKEN}`,
